@@ -1,0 +1,71 @@
+import math
+import random
+
+#Counts how many times the user was wrong
+#At 10 wrong letters the game ends
+count = 0
+
+#List of random words
+rando = ["planet", "help", "smoke", "number", "right", "after", "quick", "brown", "jumped", " over"]
+
+#Letters guessed so far
+guess = ""
+
+#Choose a random word from the list
+word = random.choice(rando)
+
+print("Hello, we're going to play hangman.")
+
+#List the number of letters in the word
+print("The word has " + str(len(word)) + " letters")
+
+print("The word starts with the letter '" + word[0] + "' and ends with letter '" + word[-1] + "'")
+
+while True:
+     userInput =(input("Please enter a single letter.\n"))
+     userInput = userInput.lower()
+     
+     if len(userInput) > 1:
+        print("You have entered more than 1 character.\n")
+        continue
+    
+     elif userInput.isdigit():
+         print("That is a number!\n")
+         continue
+        
+     #If input is not alphabetic and is equal to 1 character
+     elif userInput.isalpha() and len(userInput) >= 1:
+         
+        #Check if the letter is not in the word
+        #If it's not in the word increment count by 1
+        if userInput not in word:
+             print("That letter is not in the word\n")
+             count = count + 1
+             chances = 10 - count
+             print("You have " + str(chances) + " guesses left.\n")
+             if count == 10:
+                 print("You lost.")
+                 input("Press <Enter> to continue.")
+                 exit(1)
+             continue
+        else:
+            
+            #Notice I've cheated a bit here(or better said I had no other better ideas)
+            #The words choosen don't have the same letter twice
+            #If they did, this code would still work but the user would not be able to finish the game
+            if userInput in guess:
+                print ("You have already choosen that letter.\n")
+                continue
+            guess += '' + userInput
+            #Again, I had no other better ideas. I simply compare the lenght of "guess"(which is the total letters guessed so far)
+            #To the lenght of the word. If they're equal I assume the user won.
+            #It works, but it's not the best code ever written T_T
+            if len(guess) == len(word):
+                print("You won!" + " The word was: '" + word + "'")
+                print("Now pat yourself on the back and have a cookie.")
+                input()
+                exit(0)
+            print("The letter '" + userInput + "' is in the word and is the " + str((word.index(userInput)) + 1) + " letter of word\n")
+
+     else:
+         print("That is not a letter.\n")
